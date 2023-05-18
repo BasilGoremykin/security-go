@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option go_package = "in/a/galaxy/far/far/away";
+
+message AuthRequest {
+  string token = 1;
+}
+
+message TokenPermissionCheckRequest {
+  string token = 1;
+  uint32 permissionId = 2;
+  uint64 targetId = 3;
+  string targetType = 4;
+}
+
+message UserPermissionCheckRequest {
+  uint64 userId = 1;
+  uint32 permissionId = 2;
+  uint64 targetId = 3;
+  string targetType = 4;
+}
+
+message AddPermissionToUserRequest {
+  uint64 userId = 1;
+  uint32 permissionId = 2;
+  uint64 targetId = 3;
+  string targetType = 4;
+}
+
+message RemovePermissionFromUserRequest {
+  uint64 userId = 1;
+  uint32 permissionId = 2;
+  uint64 targetId = 3;
+  string targetType = 4;
+}
+
+message ClearUsersPermissionsRequest {
+  uint64 userId = 1;
+}
+
+message SecurityServiceResponse {
+  bytes responseBytes = 1;
+}
+
+service SecurityService {
+  rpc authenticate(AuthRequest) returns (SecurityServiceResponse) {}
+
+  rpc checkPermissionForToken(TokenPermissionCheckRequest) returns (SecurityServiceResponse) {}
+  rpc checkPermissionForUserId(UserPermissionCheckRequest) returns (SecurityServiceResponse) {}
+
+  rpc addPermissionToUser(AddPermissionToUserRequest) returns (SecurityServiceResponse) {}
+  rpc removePermissionFromUser(RemovePermissionFromUserRequest) returns (SecurityServiceResponse) {}
+  rpc clearUserPermissions(ClearUsersPermissionsRequest) returns (SecurityServiceResponse) {}
+}

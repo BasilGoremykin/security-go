@@ -1,0 +1,20 @@
+security:
+  grpc:
+    network: "tcp"
+    port: ":50051"
+  cache:
+    addr: "localhost:6379"
+    password: "0"
+    db: 0
+  postgres:
+    host: "localhost"
+    port: "5432"
+    username: "postgres"
+    password: "example"
+  sso:
+    introspection_url: ""
+    token_url: ""
+    user_profile_url: ""
+    client_id: ""
+    client_secret: ""
+    host: ""
