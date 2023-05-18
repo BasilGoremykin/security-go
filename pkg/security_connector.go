@@ -36,7 +36,7 @@ func NewSecurityConnector(properties SecurityConnectorProperties) (*SecurityConn
 
 	conn, err := grpc.DialContext(context.Background(), properties.Host+":"+properties.Port, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to gRPC server: %w", err)
+		return nil, fmt.Errorf("failed to connect to gRPC security-go: %w", err)
 	}
 
 	client := away.NewSecurityServiceClient(conn)
@@ -51,12 +51,12 @@ func (sc *SecurityConnector) Authenticate(token string) (*UserProfile, error) {
 
 	userProfileBinary, err := sc.client.Authenticate(context.Background(), authRequest)
 	if err != nil {
-		return nil, fmt.Errorf("error during auth request from server %w", err)
+		return nil, fmt.Errorf("error during auth request from security-go %w", err)
 	}
 
 	var userProfile UserProfile
 	if err = json.Unmarshal(userProfileBinary.GetResponseBytes(), &userProfile); err != nil {
-		return nil, fmt.Errorf("error during deserialization auth response from server")
+		return nil, fmt.Errorf("error during deserialization auth response from security-go")
 	}
 
 	return &userProfile, nil
@@ -68,7 +68,7 @@ func (sc *SecurityConnector) IsOwnerUserId(userId int64, targetId int64, targetT
 
 	binaryResponse, err := sc.client.CheckPermissionForUserId(context.Background(), userPermissionCheckRequest)
 	if err != nil {
-		return false, fmt.Errorf("error during handling permission check response form server %w", err)
+		return false, fmt.Errorf("error during handling permission check response form security-go %w", err)
 	}
 
 	return parseBoolResponse(binaryResponse)
@@ -80,7 +80,7 @@ func (sc *SecurityConnector) IsOwnerToken(token string, targetId int64, targetTy
 
 	binaryResponse, err := sc.client.CheckPermissionForToken(context.Background(), tokenPermissionCheckRequest)
 	if err != nil {
-		return false, fmt.Errorf("error during handling permission check response from server %w", err)
+		return false, fmt.Errorf("error during handling permission check response from security-go %w", err)
 	}
 
 	return parseBoolResponse(binaryResponse)
@@ -92,7 +92,7 @@ func (sc *SecurityConnector) CanInviteUserId(userId int64, targetId int64, targe
 
 	binaryResponse, err := sc.client.CheckPermissionForUserId(context.Background(), userPermissionCheckRequest)
 	if err != nil {
-		return false, fmt.Errorf("error during handling permission check response form server %w", err)
+		return false, fmt.Errorf("error during handling permission check response form security-go %w", err)
 	}
 
 	return parseBoolResponse(binaryResponse)
@@ -104,7 +104,7 @@ func (sc *SecurityConnector) CanInviteToken(token string, targetId int64, target
 
 	binaryResponse, err := sc.client.CheckPermissionForToken(context.Background(), tokenPermissionCheckRequest)
 	if err != nil {
-		return false, fmt.Errorf("error during handling permission check response from server %w", err)
+		return false, fmt.Errorf("error during handling permission check response from security-go %w", err)
 	}
 
 	return parseBoolResponse(binaryResponse)
@@ -116,7 +116,7 @@ func (sc *SecurityConnector) AddPermissionToUser(userId int64, permissionId uint
 
 	binaryResponse, err := sc.client.AddPermissionToUser(context.Background(), addPermissionRequest)
 	if err != nil {
-		return false, fmt.Errorf("error during handling add permission response from server %w", err)
+		return false, fmt.Errorf("error during handling add permission response from security-go %w", err)
 	}
 
 	return parseBoolResponse(binaryResponse)
@@ -128,7 +128,7 @@ func (sc *SecurityConnector) RemovePermissionToUser(userId int64, permissionId u
 
 	binaryResponse, err := sc.client.RemovePermissionFromUser(context.Background(), removePermissionRequest)
 	if err != nil {
-		return false, fmt.Errorf("error during handling remove permission response from server %w", err)
+		return false, fmt.Errorf("error during handling remove permission response from security-go %w", err)
 	}
 
 	return parseBoolResponse(binaryResponse)
@@ -139,7 +139,7 @@ func (sc *SecurityConnector) ClearUserPermissions(userId int64) (bool, error) {
 
 	binaryResponse, err := sc.client.ClearUserPermissions(context.Background(), clearPermissionsRequest)
 	if err != nil {
-		return false, fmt.Errorf("error during handling clear permissions response from server %w", err)
+		return false, fmt.Errorf("error during handling clear permissions response from security-go %w", err)
 	}
 
 	return parseBoolResponse(binaryResponse)
@@ -152,7 +152,7 @@ func parseBoolResponse(response *away.SecurityServiceResponse) (bool, error) {
 	)
 
 	if len(response.ResponseBytes) == 0 {
-		return false, fmt.Errorf("response from security-server is empty")
+		return false, fmt.Errorf("response from security-security-go is empty")
 	}
 
 	switch response.ResponseBytes[0] {
@@ -161,7 +161,7 @@ func parseBoolResponse(response *away.SecurityServiceResponse) (bool, error) {
 	case falseByte:
 		return false, nil
 	default:
-		return false, fmt.Errorf("unexpected byte in security-server response")
+		return false, fmt.Errorf("unexpected byte in security-security-go response")
 	}
 }
 

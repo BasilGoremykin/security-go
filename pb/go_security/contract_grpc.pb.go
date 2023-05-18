@@ -101,7 +101,7 @@ func (c *securityServiceClient) ClearUserPermissions(ctx context.Context, in *Cl
 	return out, nil
 }
 
-// SecurityServiceServer is the server API for SecurityService service.
+// SecurityServiceServer is the security-go API for SecurityService service.
 // All implementations must embed UnimplementedSecurityServiceServer
 // for forward compatibility
 type SecurityServiceServer interface {
