@@ -33,13 +33,13 @@ func main() {
 		postgresProps.Username, postgresProps.Password, postgresProps.Host, postgresProps.Port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("can't establish connection to postgres")
+		log.Fatalf("can't establish connection to postgres, %s", err)
 	}
 
 	cacheProps := props.Properties.Cache
 	cache, err := impl.NewRedisCache(cacheProps.Addr, cacheProps.Password, cacheProps.Db)
 	if err != nil {
-		log.Fatal("can't establish connection to redis")
+		log.Fatalf("can't establish connection to redis, %s", err)
 	}
 
 	ssoProps := props.Properties.Sso

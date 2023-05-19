@@ -6,10 +6,12 @@
 - [x] Поддержка SSO токенов
 - [ ] Поддержка JWT токенов
 - [x] GRPC server 
-- [ ] GRPC client lib
+- [x] GRPC client lib
 - [ ] Добавить аналог Java-Enum PermissionType 
 - [x] Unit tests
 - [x] Конфигурация через yaml файл
-- [ ] *воврат сериализованной ошибки в клиент
+- [x] *воврат сериализованной ошибки в клиент
 - [ ] *Integration client lib test
-- [ ] Docker
+- [x] Docker
+- [ ] Makefile
+- [ ] Разделить проект на 2: сервер/коннектор
